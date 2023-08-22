@@ -1,4 +1,7 @@
+import sys
 from math import gcd
+input = sys.stdin.readline
+
 def gcd_of_list(lst):
     a = lst[0]
     for b in lst[1:]:
