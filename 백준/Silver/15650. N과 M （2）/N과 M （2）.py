@@ -16,9 +16,9 @@ def dfs(start):
       start부터 n까지 숫자를 사용한다.
     """
     for i in range(start, N+1):
-        if i not in lst: #중복되지 않은 수 넣기
-            lst.append(i)
-            dfs(i) #dfs 탐색하며 길이 M인 수열 찾기, M이 되지 않으면 깊이 탐색
-            lst.pop()
+        """    if i not in lst: #중복되지 않은 수 넣기    """
+        lst.append(i)
+        dfs(i + 1)  # dfs 탐색하며 길이 M인 수열 찾기, M이 되지 않으면 깊이 탐색
+        lst.pop()
 
 dfs(1)
