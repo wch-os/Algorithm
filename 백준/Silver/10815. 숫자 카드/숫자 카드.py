@@ -11,9 +11,12 @@ dict = {}
 for n in nList:
     dict[n] = 1 # n은 key로 dictionary에 저장
 
+result = []
 for m in mList:
     if m not in dict: # m과 dict의 key를 대조해서 없으면 0
-        print(0, end=' ')
+        result.append(0)
 
     else: # 있으면 1
-        print(1, end=' ')
+        result.append(1)
+
+print(' '.join(map(str, result)))
