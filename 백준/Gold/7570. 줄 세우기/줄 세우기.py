@@ -1,19 +1,27 @@
+import sys
+input = sys.stdin.readline
+
 N = int(input())
 children = list(map(int, input().split()))
 
-inSet = set()
-cq = {key: 0 for key in range(1, N+1)}
-for child in children:
-    # 그 다음 숫자가 set에 있으면
-    if child+1 in inSet:
-        cq[child+1] = cq[child]
+# dp[i] = i 번호일 때까지 연속된 증가수열의 개수
+# dp[i] = dp[i-1] + 1
+dp = [0] * (N+1)
 
-    # 없으면 (연속된 숫자가 그 뒤 인덱스에 있다는 것)
-    else:
-        cq[child+1] = cq[child] + 1
+cqMax = 0
+for i in range(len(children)):
+    dp[children[i]] = dp[children[i]-1] + 1
 
-# 가장 큰 value, 즉 가장 길게 연속된 횟수를 찾기
-cqMax = max(cq.values())
+dp.sort()
+print(N-dp[N])
 
-# 연속된 숫자를 제외한 N-cqMax 번 재배열하면 된다.
-print(N-cqMax)
+
+# 5
+# 5 2 1 3 4
+# int[] dp = new int[6]
+# dp[5] = dp[4]+1;
+# dp[2] = dp[1]+1;
+# dp[1] = dp[0]+1;
+# dp[3] = dp[2]+1;
+# dp[4] = dp[3]+1;
+# 를 거쳐 dp = {0, 1, 1, 2, 3, 1};
