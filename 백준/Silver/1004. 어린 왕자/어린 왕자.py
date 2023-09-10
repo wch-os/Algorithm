@@ -1,4 +1,6 @@
+import sys
 from math import sqrt
+input = sys.stdin.readline
 
 T = int(input())
 
@@ -15,26 +17,15 @@ for _ in range(T):
         # 행성계 (a,b) 좌표, 반지름
         a, b, r = map(int, input().split())
 
-        sinPlanet = False
-        einPlanet = False
-
         # 출발점과, 도착점에서 | 행성 중앙까지의 거리
         disS = sqrt(pow(x1-a, 2) + pow(y1-b, 2))
         disE = sqrt(pow(x2-a, 2) + pow(y2-b, 2))
 
-        # 출발점이 해당 행성계 내부에 있을 경우
-        if disS < r:
-            sinPlanet = True
-
-        # 도착점이 해당 행성계 내부에 있을 경우
-        if disE <  r:
-            einPlanet = True
-
         # 출발점과 도착점이 둘 다 행성계 내부에 있을 경우는 pass
-        if sinPlanet and einPlanet:
+        if disS < r and disE <  r:
             continue
         # 한 쪽만 행성계 내부에 있을 경우는, 1번의 진입/이탈이 필요하다
-        elif sinPlanet or einPlanet:
+        elif disS < r or disE <  r:
             count += 1
 
     print(count)
