@@ -1,31 +1,33 @@
 # BruteForce
+import itertools
 
 N = int(input())
 
-lst = [list(map(int, input().split())) for _ in range(N)]
+sour = []
+bit = []
+for _ in range(N):
+    a, b = map(int, input().split())
+    sour.append(a)
+    bit.append(b)
 
-# 부분집합 만들기, O(2**N)
-subsets = []
-for i in range(1, 2**N):
-    subsetA = []
-    subsetB = []
-    for j in range(N):
-        if (i >> j) % 2 == 1: # 음...
-            subsetA.append(lst[j][0])
-            subsetB.append(lst[j][1])
-
-    subsets.append((subsetA, subsetB))
+# 1~N 까지의 조합
+sourCom = []
+bitCom = []
+for i in range(1, N+1):
+    #extend : list 안에 list가 아니라 병합되게 처리
+    #itertools.combinations : 리스트 내의 원소로 조합
+    sourCom.extend(list(itertools.combinations(sour, i)))
+    bitCom.extend(list(itertools.combinations(bit, i)))
 
 
 # (* +)의 최소값 출력
 _min = float('INF')
-for subsetA, subsetB in subsets:
+for sour, bit in zip(sourCom, bitCom): # zip() 사용
     mulA = 1
-    for item in subsetA:
-        mulA *= item
-
-    sumB = sum(subsetB)
-
+    for i in sour:
+        mulA *= i
+    sumB = sum(bit)
+    
     _min = min(_min, abs(mulA-sumB))
 
 print(_min)
