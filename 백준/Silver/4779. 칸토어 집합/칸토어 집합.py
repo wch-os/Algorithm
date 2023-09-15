@@ -1,4 +1,5 @@
 # EOF 입력받는 문제에서는 sys.stdin.readline을 사용하면 안된다..?
+# try_except만 사용
 
 def divide(n):
     # 1이 될 때까지 잘게 쪼갠다.
@@ -18,10 +19,6 @@ def divide(n):
 while True:
     try:
         s = input()
-
-        # 빈 문자열인 경우, break
-        if s == "":
-            break
 
         # 초기 칸토어 집합
         _input = pow(3, int(s))
