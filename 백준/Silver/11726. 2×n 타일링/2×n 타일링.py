@@ -1,5 +1,4 @@
 import sys
-
 sys.setrecursionlimit(10**9)
 
 def fibo(n):
@@ -8,7 +7,7 @@ def fibo(n):
     elif dp[n] != -1:
         return dp[n]
 
-    dp[n] = (fibo(n-1) % 10007) + (fibo(n-2) % 10007)
+    dp[n] = (fibo(n-1)+ fibo(n-2)) % 10007
 
     return dp[n] % 10007
 
