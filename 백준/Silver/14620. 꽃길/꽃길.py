@@ -1,17 +1,22 @@
 # 처음에 거리 2를 기준으로 접근
 # 백트래킹, 완전탐색
+# 일부 함수, 주석 정리 / 그러나 코드 길이가 너무 긴 듯한 느낌
 
 import sys
 input = sys.stdin.readline
 
-N = int(input())
+def calculateFive():
+    # 5평 대여 비용 구하기
+    for i in range(1, N - 1):
+        for j in range(1, N - 1):
+            cost = ary[i][j]
+            for z in range(1, 5):
+                ni = i + di[z]
+                nj = j + dj[z]
 
-ary = [list(map(int, input().split())) for _ in range(N)]
-costAry = [[0] * N for _ in range(N)]
+                cost += ary[ni][nj]
 
-di = [0,-1,0,0,1]
-dj = [0,0,-1,1,0]
-visited = [[False] * N for _ in range(N)]
+            costAry[i][j] = cost
 
 def backtrack(flower):
     global minCost
@@ -19,7 +24,7 @@ def backtrack(flower):
     # 꽃 3개가 정상적으로 필 경우
     if flower == 3:
         nowCost = 0
-        
+
         # 꽃을 심기 위한 최소 비용 출력
         for idx in range(len(result)):
             a, b = result[idx]
@@ -71,20 +76,18 @@ def backtrack(flower):
                 result.pop()
 
 
-result = []
+N = int(input())
+ary = [list(map(int, input().split())) for _ in range(N)] # input 저장
+costAry = [[0] * N for _ in range(N)] # cost[i][j] : 인근 5개의 구역 비용합
+
+di = [0,-1,0,0,1]
+dj = [0,0,-1,1,0]
+visited = [[False] * N for _ in range(N)]
+
+result = [] # 3개의 꽃 인덱스를 담을 리스트
 minCost = float('inf')
 
+calculateFive() # 5평 대여비용 구하기
+backtrack(0) # 3개의 꽃이 완전히 피어나는 경우 구하기
 
-for i in range(1, N-1):
-    for j in range(1, N-1):
-        cost = ary[i][j]
-        for z in range(1, 5):
-            ni = i + di[z]
-            nj = j + dj[z]
-
-            cost += ary[ni][nj]
-
-        costAry[i][j] = cost
-
-backtrack(0)
 print(minCost)
