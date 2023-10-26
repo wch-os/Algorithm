@@ -1,80 +1,65 @@
 # 처음에 거리 2를 기준으로 접근
 # 백트래킹, 완전탐색
 # 일부 함수, 주석 정리 / 그러나 코드 길이가 너무 긴 듯한 느낌
+# 수정 : check 함수 만들고 costSum을 즉각 할 수 있게끔 수정함
 
 import sys
 input = sys.stdin.readline
 
+# 5평 대여 비용 구하기
 def calculateFive():
-    # 5평 대여 비용 구하기
     for i in range(1, N - 1):
         for j in range(1, N - 1):
             cost = ary[i][j]
             for z in range(1, 5):
-                ni = i + di[z]
-                nj = j + dj[z]
-
-                cost += ary[ni][nj]
+                cost += ary[i + di[z]][j + dj[z]]
 
             costAry[i][j] = cost
 
-def backtrack(flower):
+# 모든 꽃잎이 필 수 있는 상황인지 체크
+def check(i, j):
+    for z in range(5):
+        ni = i + di[z]
+        nj = j + dj[z]
+
+        # 범위 바깥 or 이미 방문했을 경우
+        if not (0 <= ni < N and 0 <= nj < N) or visited[ni][nj]:
+            return False
+
+    # 다 필 수 있음
+    return True
+
+
+def backtrack(flower, costSum):
     global minCost
 
     # 꽃 3개가 정상적으로 필 경우
     if flower == 3:
-        nowCost = 0
-
-        # 꽃을 심기 위한 최소 비용 출력
-        for idx in range(len(result)):
-            a, b = result[idx]
-            nowCost += costAry[a][b]
-
-        minCost = min(minCost, nowCost)
+        minCost = min(minCost, costSum)
         return
-
 
     # 꽃잎이 피어나는 지역. 방문 처리
     for i in range(1, N - 1):
         for j in range(1, N - 1):
-            result.append((i, j))  # 꽃 중심좌표 append 하기 (정상적으로 핀다고 가정하고)
-
-            # 모든 꽃잎이 필 수 있는 상황인지 체크
-            count = 0
-            for z in range(5):
-                ni = i + di[z]
-                nj = j + dj[z]
-
-                if 0 <= ni < N and 0 <= nj < N:
-                    if not visited[ni][nj]:
-                        count += 1
-
-            # 꽃 3개가 정상적으로 필 경우
-            if count == 5:
+            # 꽃이 정상적으로 필 경우
+            if check(i,j):
                 # 백트래킹 방문 처리
                 for z in range(5):
                     ni = i + di[z]
                     nj = j + dj[z]
 
-                    if 0 <= ni < N and 0 <= nj < N:
-                        if not visited[ni][nj]:
-                            visited[ni][nj] = True
+                    visited[ni][nj] = True
 
-                backtrack(flower+1)
-                result.pop() # 계산 후, pop() 하기
+                result.append((i, j))
+                backtrack(flower+1, costSum + costAry[i][j])
+                result.pop()
 
                 # 유효한 경로가 아닐 경우, 미방문 처리
                 for z in range(5):
                     ni = i + di[z]
                     nj = j + dj[z]
 
-                    if 0 <= ni < N and 0 <= nj < N:
-                        if visited[ni][nj]:
-                            visited[ni][nj] = False
-
-            else: # (정상적으로 피지 못할 경우, pop())
-                result.pop()
-
+                    visited[ni][nj] = False
 
 N = int(input())
 ary = [list(map(int, input().split())) for _ in range(N)] # input 저장
@@ -88,6 +73,6 @@ result = [] # 3개의 꽃 인덱스를 담을 리스트
 minCost = float('inf')
 
 calculateFive() # 5평 대여비용 구하기
-backtrack(0) # 3개의 꽃이 완전히 피어나는 경우 구하기
+backtrack(0,0) # 3개의 꽃이 완전히 피어나는 경우 구하기
 
 print(minCost)
