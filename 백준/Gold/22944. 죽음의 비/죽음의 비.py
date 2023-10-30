@@ -3,6 +3,7 @@
 # 공간복잡도 : O(n^2)
 # 참고 아이디어 : https://jisunshine.tistory.com/183
     # visited를 boolean으로 정의하고 풀 시, 우산을 획득하고 지나가는 효율적인 경로를 고려하지 못하게 된다.
+    # 우산 내구도를 직관적으로 짠 코드
 
 import sys
 from collections import deque
@@ -30,13 +31,14 @@ for i in range(N):
             ey = j
 
 q = deque()
-q.append((sx, sy, H, 0, 0)) # 시작 좌표 x/y, 체력, 이동 거리, 우산 사이 걷는 거리
+q.append((sx, sy, H+1, 0, 0))
 visited = [[0] * N for _ in range(N)] # 해당 지점에서 남은 체력
 visited[sx][sy] = H
 
-umbrella = False
+# "출발지도 비를 맞게 코드를 작성해서, 체력을 +1 해준다."
 while len(q)>0:
-    x, y, power, dis, interval = q.popleft()
+    # 시작 좌표 x/y, 남은 체력, 이동 거리, 우산 내구도
+    x, y, power, dis, umbrella = q.popleft()
 
     # end 지점 도착
     if x == ex and y == ey:
@@ -45,12 +47,13 @@ while len(q)>0:
 
     # 우산 도착
     if ary[x][y] == 'U':
-        if umbrella: # 이전에 우산이 있는 상태
-            if interval < D: # 우산 내구도가 남아있는 상태에서, 새로운 우산을 썼을 때
-                power = power - (D - interval) # 남은 내구도 빼주기
-        power += D
-        interval = 0
-        umbrella = True
+        umbrella = D  # 우산 내구도 초기화
+
+    # 우산 내구도부터 차감, 없으면 체력이 닳는다.
+    if umbrella != 0:
+        umbrella -= 1
+    else:
+        power -= 1
 
     # 현재 체력을 다 소비하면
     if power == 0:
@@ -61,8 +64,8 @@ while len(q)>0:
         ny = y + dy[i]
 
         if 0 <= nx < N and 0 <= ny < N:
-            if power > visited[nx][ny]: # 현재 목숨 + 우산의 내구도의 합이 더 큰 경우
-                visited[nx][ny] = power
-                q.append((nx, ny, power-1, dis+1, interval+1))
+            if power + umbrella > visited[nx][ny]: # 현재 목숨 + 우산의 내구도의 합이 더 큰 경우
+                visited[nx][ny] = power + umbrella
+                q.append((nx, ny, power, dis+1, umbrella))
 
 print(-1)
