@@ -1,3 +1,5 @@
+# k==1 조건 코드 제외 
+
 import sys
 input = sys.stdin.readline
 
@@ -29,8 +31,8 @@ for i in range(1, N+1):
             if k >= 2:
                 dp[i][j] = max(dp[i][j], dp[k-2][j-1] + rangeSum[i] - rangeSum[k-1])
 
-            # k==1 조건이 필요할까? | 1개의 구간일 때는 총합 값이다.
-            elif k == 1 and j == 1:
+            # 1개의 구간일 때는 총합 값이다.
+            elif j == 1:
                 dp[i][j] = max(dp[i][j], rangeSum[i])
 
 print(dp[N][M])
