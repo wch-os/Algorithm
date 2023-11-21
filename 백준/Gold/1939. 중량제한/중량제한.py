@@ -3,6 +3,8 @@
 # 공간복잡도 : O(N)
 # 참고 : https://jie0025.tistory.com/212
 
+# 69514622 코드에서 lower_bound 구현만 다르게 했다.
+
 # 그래프 탐색으로 푸는건가..??
 # 이렇게 풀면 왜 틀리는건가?
     # 감당 가능한 무게가 작은 쓸데없는 다리가 있을 경우,
@@ -10,22 +12,19 @@
 
 # 31번째 라인 부등호 반대로 함.. (감당 가능하려면, 그보다 커야지요)
 
-# 이분탐색 인덱스 문제..?
-
 from collections import deque
 import sys
 input = sys.stdin.readline
 
 def bfs(mid):
+    visited = [False] * (N+1)
     q = deque()
     q.append(endA)
-    visited = [False] * (N+1)
 
-    while q:
+    while len(q) > 0:
         dot = q.popleft()
         visited[dot] = True
 
-        # mid 무게를 감당하며, 최종 목적지까지 도착했을 경우
         if dot == endB:
             return True
 
