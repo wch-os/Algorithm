@@ -35,12 +35,12 @@ for k in range(1, n+1):
             # 양방향일 시 그냥 지나가고, 단방향일 시 +1 카운트
                 # 구해야 할 것은 최소 몇 개의 일반통행 길을 양방향 통행으로 바꿔야 하는가? → 주어지지 않는 도로는 제외한다.(FIX)
             # 따라서 minDis[i][j]는 "양방향 통행으로 바꿔야 할 단방향 도로의 갯수"가 저장된다.
-            if minDis[i][k] != FIX and minDis[k][j] != FIX:
-                minDis[i][j] = min(minDis[i][j], minDis[i][k] + minDis[k][j])
+            minDis[i][j] = min(minDis[i][j], minDis[i][k] + minDis[k][j])
 
 
 
 # 각 질문에 대해, 최소 몇 개의 일방통행 길이 양방향 통행으로 바꿔야 출발지에서 도착지로 갈 수 있는지를 출력
+result = []
 k = int(input())
 for _ in range(k):
     s, e = map(int, input().split())
