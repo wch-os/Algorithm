@@ -1,4 +1,5 @@
 # 낮 코드에 의미없이 반복하는 코드가 있었다.
+# 마피아 혼자 살아남았을 때, exit() 하면 더 효율적이지 않을까?
 
 # 풀이 시간 : 1시간 30분 + 20분
 # 시간복잡도 : O(N*N^2)
@@ -12,10 +13,16 @@ input = sys.stdin.readline
 def dfs(night, playerCnt):
     global result
 
-    # 마피아가 죽었거나, 마피아 혼자 살아남았을 경우
-    if not player[me][1] or playerCnt == 1:
+    # 마피아가 죽은 경우
+    if not player[me][1]:
         result = max(result, night)
         return
+
+    # 마피아 혼자 살아남았을 경우
+    if playerCnt == 1:
+        result = max(result, night)
+        print(result)
+        exit()
 
 
     # 낮
