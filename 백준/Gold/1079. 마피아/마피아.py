@@ -13,16 +13,18 @@ input = sys.stdin.readline
 def dfs(night, playerCnt):
     global result
 
-    # 마피아가 죽은 경우
-    if not player[me][1]:
-        result = max(result, night)
-        return
-
     # 마피아 혼자 살아남았을 경우
     if playerCnt == 1:
         result = max(result, night)
         print(result)
         exit()
+        
+    # 마피아가 죽은 경우
+    if not player[me][1]:
+        result = max(result, night)
+        return
+
+
 
 
     # 낮
