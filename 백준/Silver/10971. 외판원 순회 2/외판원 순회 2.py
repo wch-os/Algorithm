@@ -1,7 +1,7 @@
 # https://www.acmicpc.net/board/view/125351
 # 이전 코드가 틀린 이유 : 마지막 지점에서, 첫번째 지점으로 가는 경로를 고려하지 않았다..
 
-# i : i도시 | idx : 방문한 도시의 개수 | cost : 지금까지 든 비용
+# i : i도시 | idx : 방문한 도시의 개수 | cost : 지금까지 든 비용 | start : 시작지점
 def dfs(i, idx, cost, start):
     global result
 
@@ -11,6 +11,10 @@ def dfs(i, idx, cost, start):
         if W[i][start]:
             cost += W[i][start]
             result = min(result, cost)
+        return
+
+    # 백트래킹 시간 절약을 위해.. cost보다 큰 경우 바로 return 해준다.
+    elif result < cost:
         return
 
     for j in range(N):
