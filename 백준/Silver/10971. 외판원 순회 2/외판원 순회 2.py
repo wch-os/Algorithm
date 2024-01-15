@@ -1,44 +1,57 @@
-# https://www.acmicpc.net/board/view/125351
-# 이전 코드가 틀린 이유 : 마지막 지점에서, 첫번째 지점으로 가는 경로를 고려하지 않았다..
+# 2098번을 풀면서, 다시 제출해보는 외판원 문제
+# 저번 제출 코드를 리뷰하면서 최적화
+    # https://www.acmicpc.net/source/66806749
 
-# i : i도시 | idx : 방문한 도시의 개수 | cost : 지금까지 든 비용 | start : 시작지점
-def dfs(i, idx, cost, start):
+# 외판원 순회
+# 어느 지점에서 시작해도 어차피 같은 경로의 최적 경로가 산출된다.
+
+# 백트래킹
+# 길이 없으면 break
+# 다시 시작 지점으로 돌아오면 break
+
+# 메모제이션
+# 특정 노드를 방문하게 되는 경우의 수는 매우 많다.
+# 중복 경로에 대한 메모제이션 필요
+    # i : 현재 방문 노드 / j : 지금까지 방문한 노드 (bit)
+    # dp[i][visited] = i에서 미방문 노드에 대한 경로 cost 계산
+                     # 이 때, 출발 노드까지 가는 비용은 각각이므로 별도의 계산 필요 (이것은 dp값에 저장 X)
+
+    # dp[i][visited] = min(dp[i][visited], dp[j][vistied | (1 << j)] + graph[i][j])
+
+
+def dfs(go, cost, depth):
     global result
 
-    # 출발지 제외하고, 모든 도시를 방문했을 경우
-    if idx == N-1:
-        # 마지막 지점에서, 첫번째 지점으로 가는 경로가 존재해야 한다!
-        if W[i][start]:
-            cost += W[i][start]
-            result = min(result, cost)
+    # 모든 노드를 방문했을 시
+    if depth == N:
+        # 마지막 노드에서 출발점으로 되돌아 올 수 있을 때
+        if graph[go][0]:
+            result = min(result, cost + graph[go][0])
         return
 
-    # 백트래킹 시간 절약을 위해.. cost보다 큰 경우 바로 return 해준다.
     elif result < cost:
         return
 
-    for j in range(N):
-        # j는 출발점이어서는 안된다.
-        # j 도시가 미방문 도시였을 경우 & i에서 j까지 가는 경로가 있는경우
-        if j != start and visited[j] == False and W[i][j] > 0:
-            visited[j] = True
-            dfs(j, idx + 1, cost + W[i][j], start)
-            visited[j] = False
+    for i in range(N):
+        if not visited[i] and graph[go][i] != 0:
+            visited[i] = True
+            dfs(i, cost + graph[go][i], depth + 1)
+            visited[i] = False
 
 
-N = int(input()) # 도시의 수
-W = [list(map(int, input().split())) for _ in range(N)] # 비용 행렬
+N = int(input())
+graph = [list(map(int, input().split())) for _ in range(N)]
+visited = [False] * N
 
-visited = [False] * N # 각 도시 방문 여부
+result = float('inf')
 
-idx = 0
-cost = 0
-
-result = float('INF')
-
+# 출발점은 '0'
+# 출발점과 연결되지 않는 길은 가지 않는다.
+visited[0] = True
 for i in range(N):
-    #visited[i] = True
-    dfs(i, idx, cost, i)
-    #visited[i] = False
+    if graph[0][i]:
+        visited[i] = True
+        dfs(i, graph[0][i], 2)  # 0과 i를 방문하므로 depth는 2
+        visited[i] = False
 
 print(result)
