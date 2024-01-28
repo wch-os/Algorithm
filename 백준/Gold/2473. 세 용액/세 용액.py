@@ -1,7 +1,7 @@
 # 풀이 시간 : 40분 + 30분
-# 시간복잡도 : O(n^3)
-# 공간복잡도 : O(n^2)
-# 참고 : -
+# 시간복잡도 : O(N^2)
+# 공간복잡도 : O(N)
+# 참고 : https://kdr0407.tistory.com/33
 
 # 완전탐색
     # N * (N-1) * (N-2) / 3! = 200억
@@ -24,7 +24,7 @@ elif lst[-1] < 0:
 
 else:
     minSum = float('inf')
-    ans = [0] * 3
+    ans = []
 
     # i 고정, i+1 시작점, N-1 끝점
     for i in range(len(lst)):
@@ -36,9 +36,7 @@ else:
             val = lst[i] + lst[s] + lst[e]
             if minSum > abs(val):
                 minSum = abs(val)
-                ans[0] = lst[i]
-                ans[1] = lst[s]
-                ans[2] = lst[e]
+                ans = [lst[i], lst[s], lst[e]]
 
             # 이분탐색과 비슷
             # 총합이 음수인 경우, s++
