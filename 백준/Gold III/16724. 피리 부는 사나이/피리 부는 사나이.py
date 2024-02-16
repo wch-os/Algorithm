@@ -1,32 +1,51 @@
-# 이게 정답 코드??
-# https://eunsun-zizone-zzang.tistory.com/105
+# 풀이 시간 : 35분 + 30분?
+# 시간복잡도 : O(2NM)
+# 공간복잡도 : O(NM)
+# 참고 : -
 
-N, M = map(int,input().split())
-Map = list(list(map(str,input())) for _ in range(N))
+# dfs, bfs를 해서 모든 지역을 방문하자
+    # 시작점에 따라 결과가 달라짐
+        # 그러면, "연결됨"을 파악하자
+        # L, R에서는 좌우 블록을 dfs 탐색
+        # U, D에서는 상하 블록을 dfs 탐색
 
-visit = [[-1 for _ in range(M)] for _ in range(N)]
+# 총 몇 번 방문하는지 파악
 
-direction = ['L','R','U','D']
-dx = [0,0,-1,1]
-dy = [-1,1,0,0]
+import sys
+input = sys.stdin.readline
+sys.setrecursionlimit(10**7)
 
-def move(x,y,idx):
-    global answer
-    if visit[x][y] != -1:   # 방문함
-        if visit[x][y] == idx:
-            answer += 1
-        return  # 만일 형성된 사이클에 방문하더라도 idx가 다르기때문에 괜찮다
+direction = ['L', 'R', 'U', 'D']
+dx = [0, 0, -1, 1]
+dy = [-1, 1, 0, 0]
 
-    visit[x][y] = idx
-    i = direction.index(Map[x][y])
-    move(x + dx[i], y + dy[i], idx)
+def dfs(x, y, idx):
+    global result
 
-idx = 0
-answer = 0
-for n in range(N):
-    for m in range(M):
-        move(n,m,idx)
-        idx += 1
+    # 이미 표식이 있는 블록이면
+    if visited[x][y] != -1:
+        if visited[x][y] == idx:
+            result += 1
+        return
+
+    visited[x][y] = idx # 표식
+    k = direction.index(board[x][y])
+    dfs(x + dx[k], y + dy[k], idx)
 
 
-print(answer)
+
+N, M = map(int, input().split())
+board = [input() for _ in range(N)]
+
+visited = [[-1] * M for _ in range(N)]
+
+result = 0
+dfsCount = 0
+for i in range(N):
+    for j in range(M):
+        if visited[i][j] == -1:
+            dfsCount += 1
+            dfs(i, j, dfsCount)
+
+# print(dfsCount)
+print(result)
