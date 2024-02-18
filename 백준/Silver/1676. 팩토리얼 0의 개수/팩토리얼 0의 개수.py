@@ -16,19 +16,17 @@ N = int(input())
 
 fact = 1
 zeroCount = 0
-for i in range(1, N+1):
+for i in range(1, N + 1):
     fact *= i
 
-    while True:
-        if fact % 10 == 0: # 팩토리얼 값의 뒷자리가 0이 있으면 카운트
-            while True: # 1의 자리만 남기도록 한다.
-                if fact % 10 != 0:
-                    fact %= 10
-                    break
-                fact /= 10
-                zeroCount += 1
+    # 10으로 나눠질 경우
+    if fact % 10 == 0:
+        while True:  # 1의 자리만 남기도록 한다.
+            if fact % 10 != 0:
+                fact %= 10
+                break
 
-        else:
-            break
+            fact /= 10
+            zeroCount += 1
 
 print(zeroCount)
