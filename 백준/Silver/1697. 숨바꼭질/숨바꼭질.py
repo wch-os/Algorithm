@@ -7,28 +7,25 @@
 # → bfs로 도달하는 것이 더 빠르겠다.
 
 # 이동 규칙이 대칭이 아니다..
+# 범위 체크하고 방문 체크
 
 from collections import deque
 
 a, b = map(int, input().split())
 
 q = deque()
-q.append((a, 0))
+q.append(a)
 visited = [0] * 100001
 
 while q:
-    a, time = q.popleft()
+    a = q.popleft()
 
     if a == b:
-        print(time)
-        exit()
+        print(visited[a])
+        break
 
-    # visited 값 | 범위 바깥일 경우
-    if a < 0 or 100000 < a or visited[a]:
-        continue
-
-    visited[a] = time
-
-    q.append((a+1, time+1))
-    q.append((a-1, time+1))
-    q.append((a*2, time+1))
+    for i in (a + 1, a - 1, a * 2):
+        # visited 값 | 범위 바깥일 경우
+        if 0 <= i <= 100000 and not visited[i]:
+            visited[i] = visited[a] + 1
+            q.append(i)
