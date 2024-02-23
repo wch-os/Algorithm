@@ -1,7 +1,8 @@
 # 풀이 시간 : 1시간 20분 + 30분
 # 시간복잡도 : O(3(V+E))
 # 공간복잡도 : O(N)
-# 참고 : -
+# 참고 : https://frog-in-well.tistory.com/68
+#       https://ddingmin00.tistory.com/entry/%EB%B0%B1%EC%A4%80%ED%8C%8C%EC%9D%B4%EC%8D%AC-9370%EB%B2%88-%EB%AF%B8%ED%99%95%EC%9D%B8-%EB%8F%84%EC%B0%A9%EC%A7%80
 
 # s → c 경로 거리와
     # (s → g → h → c) , (s → h → g → c) 가 일치하는지 확인한다.
@@ -13,6 +14,11 @@
         # s → c 까지의 경로가 없을 때 INF
         # (s → g → h → c) , (s → h → g → c) 또한 INF 로
         # g-h 교차로를 지나가고 목적지에 도착했다고 판단한다.
+
+# 추가 방법
+    # 1. g-h 교차로의 거리를 소수점으로 조정하고, distance[c] = '소수' 가 나오면 출력한다.
+    # 2. s → g 와 s → h 거리를 비교해서 더 긴 결과의 끝 점을 middle로 설정한다. (증명 필요)
+        # s → middle + middle → c == s → c 이면 출력한다.
 
 import heapq
 import sys
@@ -63,8 +69,12 @@ for _ in range(T):
     candidates = [int(input()) for _ in range(t)]
 
     distFromS = dijkstra(s)
-    distFromG = dijkstra(g)
-    distFromH = dijkstra(h)
+
+    if distFromS[g] > distFromS[h]:
+        middle = g
+    elif distFromS[g] < distFromS[h]:
+        middle = h
+    distFromMiddle = dijkstra(middle)
 
     result = []
     for c in candidates:
@@ -72,10 +82,10 @@ for _ in range(T):
         K = distFromS[c]
 
         # (s → g → h → c) , (s → h → g → c)
-        minS = min(distFromS[g] + gToh + distFromH[c], distFromS[h] + gToh + distFromG[c])
+        Q = distFromS[middle] + distFromMiddle[c]
 
         # 기존 최단거리에서 g-h 교차로를 지나갔음을 의미한다..
-        if K == minS:
+        if K == Q:
             result.append(c)
 
     result.sort()
