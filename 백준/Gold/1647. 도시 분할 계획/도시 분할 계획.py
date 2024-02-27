@@ -1,43 +1,22 @@
-# 풀이 시간 : 25분 + 30분
-# 시간복잡도 : O(MlogM)
-# 공간복잡도 : O(M)
-# 참고 : -
+# 크루스칼 알고리즘
 
-# 프림, 크루스칼 알고리즘
-# 빠른 입출력
-
-# 프림 알고리즘을 잘못 알고 있었다..
-    # False : 모든 간선들 중 최소 간선을 찾아 이동
-    # True : 방문한 노드의 미방문 노드 간선들 중 최소 간선을 찾아 이동
-
-# 왜 pop()을 하고 다시 미방문 체크를 해줘야 하지??
-
-import heapq
 import sys
 input = sys.stdin.readline
 
-def prim():
-    pq = [] # 간선(거리, 시작 노드) 저장
-    heapq.heappush(pq, (0, 1))
+def find(x):
+    if parent[x] == x:
+        return x
 
-    costList = []
-    while pq:
-        # 연결된 간선들 중 최소 간선을 pop한다.
-        cost, now = heapq.heappop(pq)
+    return find(parent[x])
 
-        if not visited[now]:
-            visited[now] = True
-            costList.append(cost)
+def union(x, y):
+    rootX = find(x)
+    rootY = find(y)
 
-            if len(costList) == N:
-                break
-            for dist, end in graph[now]:
-                if not visited[end]:
-                    # 연결된 간선들 중 미방문 노드 간선을 모두 heap에 넣는다.
-                    heapq.heappush(pq, (dist, end))
-
-    return sum(costList) - max(costList)
-
+    if rootX < rootY:
+        parent[rootY] = rootX
+    else:
+        parent[rootX] = rootY
 
 
 # 집의 개수, 길의 개수
@@ -45,9 +24,29 @@ N, M = map(int, input().split())
 graph = [[] for _ in range(N + 1)]
 visited = [False for _ in range(N + 1)]
 
+edges = []
 for _ in range(M):
     s, e, c = map(int, input().split())
-    graph[s].append((c, e))
-    graph[e].append((c, s))
+    edges.append((c,s,e))
 
-print(prim())
+# 초기 부모 노드는 자기 자신으로 설정
+parent = [0 for _ in range(N+1)]
+for i in range(1, N+1):
+    parent[i] = i
+
+# 최소 간선부터 선택하기 위함
+edges.sort()
+
+result = []
+for cost, start, end in edges:
+    # 부모 노드가 서로 다를 시
+    # 즉, 사이클을 형성하지 않을 시
+    if find(start) != find(end):
+        union(start, end)
+
+        result.append(cost)
+        if len(result) == N-1:
+            break
+
+# 마을 분리
+print(sum(result) - max(result))
