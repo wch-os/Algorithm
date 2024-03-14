@@ -63,13 +63,10 @@ def dfs(x, y, idx):
     for t, lr in change:
         if t == time:
             if lr == "L":
-                idx -= 1
-                if idx < 0: idx = 3
-                break
+                idx = (idx - 1) % 4
+
             else:
-                idx += 1
-                if idx > 3: idx = 0
-                break
+                idx = (idx + 1) % 4
 
     dfs(nx, ny, idx)
 
