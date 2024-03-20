@@ -1,2 +1,8 @@
-# Baekjoon
-This is a auto push repository for Baekjoon Online Judge created with [BaekjoonHub](https://github.com/BaekjoonHub/BaekjoonHub).
+# Algorithm
+
+**1. Java**  
+https://wch-m.tistory.com/
+
+
+**2. Python**  
+https://wch-0625.tistory.com/category/Algorithm
