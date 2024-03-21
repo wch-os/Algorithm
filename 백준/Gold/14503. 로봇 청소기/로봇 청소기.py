@@ -20,7 +20,7 @@ def dfs(x, y, idx, cnt):
 
         flag = False
         for i in range(1, 5):
-            j = (idx + i) % 4 # 현재 위치에서 회전 90도 회전하기
+            j = (idx - i) % 4 # 현재 위치에서 회전 90도 회전하기, -로 변경
 
             nx = x + dx[j]
             ny = y + dy[j]
@@ -44,7 +44,7 @@ def dfs(x, y, idx, cnt):
 if __name__ == "__main__":
     # 북, 서, 남, 동
     dx = [-1, 0, 1, 0]
-    dy = [0, -1, 0, 1]
+    dy = [0, 1, 0, -1]
 
     N, M = map(int, input().split())
 
@@ -54,7 +54,5 @@ if __name__ == "__main__":
     # 0: 청소되지 않은 빈 칸, 1: 벽
     board = [list(map(int, input().split())) for _ in range(N)]
     visited = [[False] * M for _ in range(N)]
-    
-    if d == 1: d = 3
-    elif d == 3: d = 1
+
     print(dfs(r, c, d, 1))
