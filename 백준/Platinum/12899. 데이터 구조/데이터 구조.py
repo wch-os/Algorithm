@@ -1,3 +1,5 @@
+# 트리 배열 초기화 방식만 바꿔줌
+
 import sys
 input = sys.stdin.readline
 
@@ -6,7 +8,7 @@ input = sys.stdin.readline
 
 # 트리로 데이터 구간별 개수를 파악해야 하므로
 # 데이터 개수가 N개일 때, N보다 큰 가장 가까운 N의 제곱수의 2배만큼 배열의 크기를 미리 만들어야 한다.
-tree = [0 for _ in range(2000000 * 4)]
+tree = [0] * (2**22)
 
 # start : 시작 인덱스, end : 마지막 인덱스
 # value : 기준 인덱스
