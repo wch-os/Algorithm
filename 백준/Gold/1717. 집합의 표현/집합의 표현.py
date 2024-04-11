@@ -3,8 +3,7 @@
     # M : 연산 개수
     # O(a(N))
 # 공간복잡도 : O(N)
-# 참고 : python round() 관련 자료
-#       https://blockdmask.tistory.com/418
+# 참고 : https://dheldh77.tistory.com/entry/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EC%9C%A0%EB%8B%88%EC%98%A8%ED%8C%8C%EC%9D%B8%EB%93%9CUnion-Find-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-1
 
 
 # 0 : 합집합
@@ -25,10 +24,9 @@ def union(x, y):
     rootX = find(x)
     rootY = find(y)
 
-    if rootX < rootY:
-        parent[rootY] = rootX
-    else:
-        parent[rootX] = rootY
+    parent[rootY] = rootX
+    # else:
+    #     parent[rootX] = rootY
 
 
 # m : 입력으로 주어지는 연산의 개수
