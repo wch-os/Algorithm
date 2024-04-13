@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 113600 KB, 시간: 288 ms
+메모리: 31252 KB, 시간: 908 ms
 
 ### 분류
 
@@ -12,7 +12,7 @@
 
 ### 제출 일자
 
-2023년 11월 3일 11:41:51
+2024년 4월 13일 21:59:02
 
 ### 문제 설명
 
@@ -20,11 +20,11 @@
 
 <p>아래는 올바른 모눈종이의 예시이다. 주황색 칸은 스티커가 붙은 칸을, 하얀색 칸은 스티커가 붙지 않은 칸을 나타낸다.</p>
 
-<p style="text-align: center;"><img alt="" src=""></p>
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/ce5fb059-90ea-4e64-bf78-03219c3d3c1a/-/preview/"></p>
 
 <p>반면 아래는 올바르지 않은 모눈종이의 예시이다. 첫 번째는 윗쪽에 불필요한 행이 있고, 두 번째는 왼쪽에 불필요한 열이 있다. 그리고 세 번째는 스티커의 각 칸이 상하좌우로 모두 연결되어 있지 않다.</p>
 
-<p style="text-align: center;"><img alt="" src=""></p>
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/0c8b4fac-2c5d-40c2-8280-c5530bc97616/-/preview/"></p>
 
 <p>혜윤이는 자신의 노트북에 이 스티커들을 붙이기로 했다. 혜윤이의 노트북은 마침 직사각형 모양이고, 스티커가 인쇄된 모눈종이와 같은 간격으로 격자가 그려져 있다. 혜윤이는 스티커들을 먼저 받았던 것부터 차례대로 격자에 맞춰서 붙이려고 한다.</p>
 
@@ -39,22 +39,22 @@
 
 <p>아래의 예시를 통해 스티커를 붙이는 과정을 이해해보자. 노트북은 세로 5칸, 가로 4칸 크기이고, 혜윤이가 가지고 있는 스티커들은 아래와 같다. 왼쪽에서 오른쪽 순으로 스티커를 붙일 것이다.</p>
 
-<p style="text-align: center;"><img alt="" src=""></p>
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/f293523b-6def-453f-a1fd-665a42918b82/-/preview/"></p>
 
 <ol>
 	<li>
 	<p>첫 번째 스티커는 회전 없이 온전히 붙일 수 있는 공간이 아래와 같이 6곳이 있다.</p>
 
-	<p style="text-align: center;"><img alt="" src=""></p>
+	<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/a40dad81-8ed6-439e-b644-ebe7796cbb12/-/preview/"></p>
 
 	<p>이 중에서 가장 위쪽의 위치, 가능한 가장 위쪽의 위치가 여러 개이면 그 중에서 가장 왼쪽의 위치는 첫 번째이다. 스티커를 붙인 후 노트북의 모양은 아래와 같다.</p>
 
-	<p style="text-align: center;"><img alt="" src=""></p>
+	<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/d3baa057-00b3-4f8a-861c-1ccfe0441584/-/preview/"></p>
 	</li>
 	<li>
 	<p>두 번째 스티커는 회전 없이 온전히 붙일 수 있는 공간이 없다. 그러나 시계 방향으로 90도 회전한 후에는 붙일 수 있는 공간이 1개 생긴다. 해당 공간에 스티커를 붙인 후 노트북의 모양은 아래와 같다.</p>
 
-	<p style="text-align: center;"><img alt="" src=""></p>
+	<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/92a0b86c-72bb-4843-aeca-7d1b751b6f3d/-/preview/"></p>
 	</li>
 	<li>
 	<p>세 번째 스티커는 스티커를 시계방향으로 0, 90, 180, 270도 회전시킨 모양에 대해 전부 확인을 해도 스티커를 붙일 수 있는 공간이 없다. 그러므로 해당 스티커를 붙이지 않고 버린다.</p>
@@ -62,7 +62,7 @@
 	<li>
 	<p>네 번째 스티커는 스티커를 시계방향으로 0, 90, 180도 회전 시킨 모양에 대해 온전히 붙일 수 있는 공간이 없다. 그러나 시계 방향으로 270도 회전한 후에는 공간이 1개 생긴다. 스티커를 붙인 후 노트북의 모양은 아래와 같다. 최종적으로 노트북의 18칸이 스티커로 채워졌다.</p>
 
-	<p style="text-align: center;"><img alt="" src=""></p>
+	<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/ad463bb4-f424-4fa5-92be-05b78ad5ff29/-/preview/"></p>
 	</li>
 </ol>
 
