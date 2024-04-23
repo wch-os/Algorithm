@@ -13,7 +13,7 @@ def rowSearch():
                 setTry = False
                 break
 
-            if board[i][j] > board[i][j+1]: # 기존 높이가 큰 경우
+            elif board[i][j] > board[i][j+1]: # 기존 높이가 큰 경우
                 for k in range(j+1, j+1+L): # 경사로 길이와 맞는지 판단
                     if k >= N or board[i][j+1] != board[i][k] or visited[i][k]: # 이미 경사로가 설치되어 있으면
                         setBoard.clear()
@@ -23,14 +23,7 @@ def rowSearch():
                         setBoard.append((i, k))
 
 
-                if not setTry:
-                    break
-                else:
-                    for r, c in setBoard:
-                        visited[r][c] = True
-
-
-            if board[i][j] < board[i][j + 1]: # 기존 높이가 낮은 경우
+            elif board[i][j] < board[i][j + 1]: # 기존 높이가 낮은 경우
                 for k in range(j, j-L, -1):
                     if k < 0 or board[i][j] != board[i][k] or visited[i][k]:
                         setBoard.clear()
@@ -39,11 +32,13 @@ def rowSearch():
                     else:
                         setBoard.append((i, k))
 
-                if not setTry:
-                    break
-                else:
-                    for r, c in setBoard:
-                        visited[r][c] = True
+            # 경사로 설치 불가능
+            if not setTry:
+                break
+            # 경사로 설치
+            else:
+                for r, c in setBoard:
+                    visited[r][c] = True
 
 
         # 한 행의 검사가 모두 끝나고, 경사로를 설치할 수 있으면
@@ -79,11 +74,6 @@ def colSearch():
                     else:
                         setBoard.append((k, j))
 
-                if not setTry:
-                    break
-                else:
-                    for r, c in setBoard:
-                        visited[r][c] = True
 
             elif board[i][j] < board[i + 1][j]: # 기존 높이가 낮은 경우
                 for k in range(i, i - L, -1):
@@ -94,11 +84,13 @@ def colSearch():
                     else:
                         setBoard.append((k, j))
 
-                if not setTry:
-                    break
-                else:
-                    for r, c in setBoard:
-                        visited[r][c] = True
+            # 경사로 설치 불가능
+            if not setTry:
+                break
+            # 경사로 설치
+            else:
+                for r, c in setBoard:
+                    visited[r][c] = True
 
         # 한 행의 검사가 모두 끝나고, 경사로를 설치할 수 있으면
         if setTry:
