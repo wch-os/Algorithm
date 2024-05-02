@@ -1,53 +1,63 @@
-# 1번째로 제출한 백트래킹을, 2번 로직을 적용해 house[]을 만들고 간단하게 만듦
+# 풀이 시간 : 40분 + 10분
+# 시간복잡도 : O(13Cm * House 수 * m)
+# 공간복잡도 : O(n^2)
+# 참고 : -
+
+# Combination 구할 때 비효율적이었다.
+# depth로 M을 체크하고, 탐색 인덱스로도 설정하면 3이상으로 올라가지 않아 비효율적으로 탐색한다.
+# 따라서 depth(start)는 탐색 인덱스 기능으로 따로 설정하고, M개 체크는 len(store)로 체크하는 것이 좋다.
+# 그리고 재귀 dfs 매개변수는 start가 아니라 i
 
 import sys
 input = sys.stdin.readline
 
-# N*N 도시, M개의 치킨집
-N, M = map(int, input().split())
-ary = [list(map(int, input().split())) for _ in range(N)]
-
-# 현재 치킨집 위치 모두 파악
-chicken = []
 house = []
-for i in range(N):
-    for j in range(N):
-        if ary[i][j] == 2:
-            chicken.append((i,j))
-        elif ary[i][j] == 1:
-            house.append(((i,j)))
+store = []
+def location():
+    for i in range(N):
+        for j in range(N):
+            if board[i][j] == 1:
+                house.append((i, j))
+            elif board[i][j] == 2:
+                store.append((i, j))
 
-# 치킨집 백트래킹, 치킨집 좌표 넣을거임
-trace = []
-# 폐업시키지 않을 치킨집을 최대 M개를 골랐을 때, 도시의 치킨 거리의 최솟값
-result = float('INF')
 
+def getDistance(mStore):
+    cityDis = 0
+    for h in house:
+        minDis = float('inf')
+
+        for s in mStore:
+            shDis = abs(s[0] - h[0]) + abs(s[1] - h[1])
+            minDis = min(minDis, shDis)
+
+        cityDis += minDis
+
+    return cityDis
+
+
+result = float('inf')  # 도시 거리
+mStore = []  # M개의 가게를 담을 공간
 def dfs(start):
     global result
 
-    # 치킨집 설치가 모두 된 경우
-    if len(trace) == M:
-        sumDis = 0 # 도시의 치킨 거리
-        # '집' 과 '치킨집' 과의 거리
-        for h in house:
-            minDis = float('INF')
-            # 추적된 치킨집들에서 '집'까지의 최소 거리
-            for t in trace:
-                dis = abs(h[0]-t[0]) + abs(h[1]-t[1])
-                # 내 집에서 가장 가까운 치킨집 찾기
-                minDis = min(minDis, dis)
-
-            sumDis += minDis
-
-        result = min(result, sumDis)
+    if len(mStore) == M:
+        cityDis = getDistance(mStore)
+        result = min(result, cityDis)
         return
 
-    # 집들과의 거리 계산 필요
-    for idx in range(start, len(chicken)):
-        # 0 : 치킨집의 x좌표, 1: y좌표
-        trace.append((chicken[idx][0], chicken[idx][1]))
-        dfs(idx+1)
-        trace.pop()
+
+    for i in range(start, len(store)):
+        mStore.append((store[i][0], store[i][1]))
+        dfs(i+1)
+        mStore.pop()
+
+
+
+N, M = map(int, input().split())
+board = [list(map(int, input().split())) for _ in range(N)]
+
+location()
 
 dfs(0)
 print(result)
