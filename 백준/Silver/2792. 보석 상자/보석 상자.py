@@ -7,15 +7,10 @@ input = sys.stdin.readline
 def check(mid):
     person = 0
     for m in mlist:
-        if m % mid == 0:
-            person += (m // mid)
-        else:
-            person += (m // mid + 1)
+        # 'mid-1'은 나머지 보석 개수도 나눠줘야 하므로
+        person += (m + mid-1) // mid 
 
-    if person <= N:
-        return True
-
-    return False
+    return person <= N
 
 
 def bns():
@@ -25,7 +20,7 @@ def bns():
     # 2. lo는 정답이 될 수 있는 모든 범위를 나타낼 수 있는가?
     # 1부터 정답이 가능하다.
     lo, hi = 0, max(mlist)
-    
+
     while lo + 1 < hi:
         mid = (lo + hi) // 2
 
