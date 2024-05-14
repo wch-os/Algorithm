@@ -1,33 +1,47 @@
-import sys
-input = sys.stdin.readline
+def lowerBound(num):
+    # lo는 lst의 모든 원소가 num보다 클 경우
+        # 즉 num 값을 찾지 못할 시에 0을 반환해야 하므로, 처음에 -1로 설정해야 한다.
 
-N = int(input()) # 숫자 카드의 개수
+    # hi는 lst의 모든 원소가 num보다 작을 경우
+        # 즉 num 값을 찾지 못할 시에 N을 반환해야 하므로, 처음에 N으로 설정해야 한다.
 
-s = input()
+    # lo < o < hi, 즉 lo/hi는 항상 정답의 범위를 나타낼 수 있도록 해야 한다.
+    lo, hi = -1, N
+    while lo + 1 < hi:
+        mid = (lo + hi) // 2
 
-# 입력 문자열을 split()으로 분할해, dictionary로 변환
-# key : 문자 / value : 횟수
-_dict = {}
-for num in s.split():
-    num = int(num)
+        if num > lst[mid]:
+            lo = mid
+        else:
+            hi = mid
 
-    if num in _dict:
-        _dict[num] += 1
-    else:
-        _dict[num] = 1
+    return hi
 
+
+def upperBound(num):
+    lo, hi = -1, N
+    while lo+1 < hi:
+        mid = (lo + hi) // 2
+
+        if num >= lst[mid]:
+            lo = mid
+        else:
+            hi = mid
+
+    return hi
+
+
+N = int(input())
+lst = list(map(int, input().split()))
+lst.sort()
 
 M = int(input())
-c_s = input()
-result = []
-for num2 in c_s.split():
-    num2 = int(num2)
+have = list(map(int, input().split()))
 
-    # 포함되어 있으면, 횟수 그대로 출력
-    if num2 in _dict:
-        result.append(_dict[num2])
-    # 없으면 0 출력
-    else:
-        result.append(0)
+result = [0 for i in range(M)]
+for i in range(len(have)):
+    lower = lowerBound(have[i])
+    upper = upperBound(have[i])
+    result[i] += (upper - lower)
 
-print(' '.join(map(str, result)))
+print(*result)
