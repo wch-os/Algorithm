@@ -15,7 +15,7 @@ def lowerBound(num):
         else:
             hi = mid
 
-    return hi
+    return lo + 1
 
 
 def upperBound(num):
@@ -28,7 +28,7 @@ def upperBound(num):
         else:
             hi = mid
 
-    return hi
+    return lo + 1
 
 
 N = int(input())
