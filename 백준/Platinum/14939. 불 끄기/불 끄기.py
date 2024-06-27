@@ -1,6 +1,6 @@
 # 풀이 시간: 40분(생각) + 1시간(참고 및 풀이)
 # 시간복잡도: O(2^10 * 10^2)
-# 공간복잡도: O(2^10)
+# 공간복잡도: O(10^2)
 # 유형: 그리디
 # 참고: https://velog.io/@sunkyuj/python-%EB%B0%B1%EC%A4%80-14939-%EB%B6%88-%EB%81%84%EA%B8%B0
 
@@ -28,6 +28,8 @@ def press(board, x, y):
 
 # 메인 알고리즘 함수: 1번째 행의 경우 2^10 경우의 수를 고려 + 2~10번째 행은 바로 위의 전구가 켜져있을 때를 고려한다.
 def solve():
+    global result
+
     for i in range(1 << 10):
         cnt = 0
         newBoard = copy.deepcopy(board)
@@ -47,12 +49,12 @@ def solve():
 
         # 10번째 줄에 불이 켜져 있지 않으면
         if not any(newBoard[9]):
-            pressCount[i] = cnt
+            result = min(result, cnt)
 
 
 
 board = [[False] * 10 for _ in range(10)]
-pressCount = [101] * (1<<10) # 2^10 경우의 수에서, 모든 전구를 끄기 위해 '최소한으로 눌러야 하는 스위치 개수'를 저장
+result = float('inf')
 
 dx = [-1, 0, 0, 0, 1]
 dy = [0, -1, 0, 1, 0]
@@ -63,8 +65,4 @@ initBoard()
 # 문제 풀이
 solve()
 
-result = min(pressCount)
-if result == 101:
-    print(-1)
-else:
-    print(result)
+print(-1 if result == float('inf') else result)
