@@ -11,6 +11,7 @@
     # bfs는 인접 노드를 전부 방문하면서 빈틈없이 방문하는 플로우인데, 그렇게 되면 '1-2-1' 순환 방지를 위한 로직을 적용할 수 없게 된다.
 # visited 공간복잡도를 줄이기 위해 백트래킹과 같이 visited[]를 초기화하는 작업에서도 오랜만에 사용하려하니 시간이 걸렸다.
 
+# 부동 소수점 비교로 오래 걸리는가? float('inf) / -1
 
 import sys
 input = sys.stdin.readline
@@ -51,7 +52,7 @@ def findDistance():
         now = q.popleft()
 
         for next in graph[now]:
-            if result[next] == float('inf'): # 순환선이 아닐 경우
+            if result[next] == -1: # 순환선이 아닐 경우
                 q.append(next)
                 result[next] = result[now] + 1
 
@@ -64,7 +65,7 @@ graph = [[] for _ in range(N+1)]
 # 순환역을 찾을 때, 해당 역을 방문했는지 체크하기 위한 방문 리스트 (방문했으나 depth가 2인 경우 순환역)
 visited = [False] * (N + 1)
 # 각 역에서 순환선까지의 거리 리스트
-result = [float('inf') for _ in range(N+1)]
+result = [-1 for _ in range(N+1)]
 
 for _ in range(N):
     a, b = map(int, input().split())
