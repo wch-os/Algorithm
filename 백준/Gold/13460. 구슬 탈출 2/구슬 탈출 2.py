@@ -1,121 +1,79 @@
-# 풀이 시간 : 2시간
-# 시간복잡도 : O(8N*result)
-# 공간복잡도 : O(NM)
-# 참고 : -
+# 풀이 시간: 45분
+# 시간복잡도: O(4* a^2)
+    # a: '.'의 개수
+    # a^2: R, B의 위치로 중복 노드를 파악함.
+# 공간복잡도: O(N^2)
+# 유형: bfs, simulation
+# 참고: 스터디
 
-# . : 빈 칸
-# # : 장애물 or 벽
-# 0 : 구멍 위치(*)
-# R : 빨간 구슬의 위치
-# B : 파란 구슬의 위치
 
-import copy
 import sys
 from collections import deque
 input = sys.stdin.readline
 
-red, blue = 0, 0
-N, M = 0, 0
+def move(x, y, i, board):
+    count = 0
+    while board[x + dx[i]][y + dy[i]] != '#' and board[x][y] != 'O':
+        x += dx[i]
+        y += dy[i]
+        count += 1
 
-# 시간 복잡도 : O(N)
-def redCheck(dx, dy, i, redX, redY, boards):
-    redFlag = False
-
-    boards[redX][redY] = '.' # 기존 빨간색 구슬 '.'
-    while boards[redX + dx[i]][redY + dy[i]] == '.' or boards[redX + dx[i]][redY + dy[i]] == 'O':
-        if boards[redX + dx[i]][redY + dy[i]] == 'O':
-            redFlag = True
-            return 0, 0, redFlag, boards # (0, 0) 벽으로 의미없는 좌표이므로, 구슬에 빠졌을 때 해당 칸으로 지정
-        redX += dx[i]
-        redY += dy[i]
-
-    boards[redX][redY] = 'R' # 빨간색 구슬 이동
-    return redX, redY, redFlag, boards # (이동한 좌표, 빨간색 구슬이 들어갔는지 유무, 바뀐 보드판)
+    return x, y, count
 
 
-def blueCheck(dx, dy, i, blueX, blueY, boards):
-    blueFlag = False
+def bfs(rx, ry, bx, by, board):
+    q = deque([(rx, ry, bx, by, 1)]) # 리스트 주의
+    visited = set([(rx, ry, bx, by)])
 
-    boards[blueX][blueY] = '.'  # 기존 파란색 구슬 '.'
-    while boards[blueX + dx[i]][blueY + dy[i]] == '.' or boards[blueX + dx[i]][blueY + dy[i]] == 'O':
-        if boards[blueX + dx[i]][blueY + dy[i]] == 'O':
-            blueFlag = True
-            return 0, 0, blueFlag, boards
-        blueX += dx[i]
-        blueY += dy[i]
-
-    boards[blueX][blueY] = 'B'  # 파란색 구슬 이동
-    return blueX, blueY, blueFlag, boards # (이동한 좌표, 파란색 구슬이 들어갔는지 유무, 바뀐 보드판)
-
-
-# 4방향을 red/blue 이동하므로 8N * 이동 수 result
-def bfs():
-    visited = set()
-    q = deque()
-    q.append((red, blue, 0, False, False, board))
     while q:
-        r, b, move, rFlag, bFlag, boards = q.popleft()
+        rx, ry, bx, by, depth = q.popleft()
 
-        # 빨간색 o, 파란색 x
-        if rFlag and not bFlag:
-            print(move)
-            exit()
-        # 10번 이상 이동
-        elif move > 10:
-            print(-1)
-            exit()
-        # 파란색 구슬이 빠졌으면 다른 길을 모색한다.
-        elif bFlag:
-            continue
+        if depth > 10:
+            return -1
 
-        # 중복 탐색을 방지하기 위해 R(x, y) / B(x, y) 를 네자리수로 표현을 해 두었다.
-        visit = r[0] * 1000 + r[1] * 100 + b[0] * 10 + b[1]
-        if visit not in visited:
-            visited.add(visit)
+        for i in range(4):
+            move_rx, move_ry, red_count = move(rx, ry, i, board)
+            move_bx, move_by, blue_count = move(bx, by, i, board)
 
-            dx = [0,1,-1,0]
-            dy = [-1,0,0,1]
+            """빨간색 구슬만 빼낼 수 있을 때"""
+            if board[move_bx][move_by] == 'O':
+                continue
+            elif board[move_rx][move_ry] == 'O':
+                return depth
 
-            for i in range(4):
-                redX, redY = r[0], r[1]
-                blueX, blueY = b[0], b[1]
-
-                # 무슨 색을 먼저 이동해야 할 지 정한다.
-                firstRed = True
-                if (i == 0 and redY > blueY) or (i == 1 and redX < blueX) or (i == 2 and redX > blueX) or (i == 3 and redY < blueY):
-                    firstRed = False
-
-                if firstRed:
-                    # 기울였을 때, 빨간색 구슬이 이동할 수 있으면
-                    redX, redY, redFlag, boardChange = redCheck(dx, dy, i, redX, redY, copy.deepcopy(boards))
-                    # 다시 파란색 구슬이 이동할 수 있는지 체크
-                    blueX, blueY, blueFlag, boardChange = blueCheck(dx, dy, i, blueX, blueY, boardChange)
+            """빨간 구슬과 파란 구슬이 동시에 같은 칸이 있을 경우"""
+            if move_rx == move_bx and move_ry == move_by:
+                if red_count > blue_count:
+                    move_rx -= dx[i]
+                    move_ry -= dy[i]
                 else:
-                    blueX, blueY, blueFlag, boardChange = blueCheck(dx, dy, i, blueX, blueY, copy.deepcopy(boards))
-                    redX, redY, redFlag, boardChange = redCheck(dx, dy, i, redX, redY, boardChange)
+                    move_bx -= dx[i]
+                    move_by -= dy[i]
 
-                # boards → boardChange 된 보드로 탐색을 해야 한다.
-                # 기존 boards 는 for i in range(4) 로 탐색할 수 있는 곳을 찾아야 하기 때문에, 변화되면 안 된다.
-                # 따라서 deepcopy를 사용했다.
-                q.append(((redX, redY), (blueX, blueY), move+1, redFlag, blueFlag, boardChange))
+            """중복 분기 탐색 X"""
+            if (move_rx, move_ry, move_bx, move_by) not in visited:
+                visited.add((move_rx, move_ry, move_bx, move_by))
+                q.append((move_rx, move_ry, move_bx, move_by, depth + 1))
 
-    # 계속 같은 자리 탐색만 시도해, 큐에 원소가 없어 반복이 끝날 때
-    print(-1)
+    return -1
+
+
+def init():
+    N, M = map(int, input().split())  # 세로, 가로
+    board = [list(input()) for _ in range(N)]
+
+    for i in range(N):
+        for j in range(M):
+            if board[i][j] == 'R':
+                rx, ry = i, j
+            elif board[i][j] == 'B':
+                bx, by = i, j
+
+    print(bfs(rx, ry, bx, by, board))
 
 
 if __name__ == "__main__":
-    N, M = map(int, input().split())
+    dx = [0, -1, 1, 0]
+    dy = [-1, 0, 0, 1]
 
-    board = []
-    for i in range(N):
-        row = []
-        for s in input():
-            row.append(s)
-            if s == 'R':
-                red = (i, len(row) - 1)
-
-            elif s == 'B':
-                blue = (i, len(row) - 1)
-        board.append(row)
-
-    bfs()
+    init()
