@@ -1,3 +1,13 @@
+# 풀이 시간: 2시간
+# 시간복잡도: O(2^9 * a)
+# 공간복잡도: O(9)
+# 유형: backtracking
+# 참고: https://iamheesoo.github.io/blog//algo-boj16571
+
+# 일반적인 백트래킹과 접근을 달리한다.
+# '상대방이 게임을 끝낼 수 있는가?'를 상태로 두고, 그 과정에서 '승/무/패'를 우선순위화 하기 위해 min() 함수를 사용한다.
+# 초기 잘못된 접근으로 일정한 규칙 하에 움직이는 그리디로 생각했고, 이후에는 백트래킹으로 NQueen처럼 일정 구역을 회피해야 되는지 생각했다.
+
 """ '틱택토'가 완성되었는지 체크하는 함수 """
 def checkFinish(now):
     for i in range(3):
@@ -27,7 +37,8 @@ def backtracking(now):
 
                 # 내가 이기면, 상대방은 진다.
                 if checkFinish(now):
-                    minis = min(minis, -1)
+                    board[i][j] = 0
+                    return 1
 
                 else:
                     """
@@ -39,7 +50,7 @@ def backtracking(now):
                     minis = min(minis, backtracking(2 if now == 1 else 1))
 
                 board[i][j] = 0
-                
+
 
     """
     - minis는 상대방의 최선의 승패에 따라, 나의 승패를 return 한다.
